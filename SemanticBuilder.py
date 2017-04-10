@@ -5,9 +5,11 @@ def BuildSemanticMap(database):
     cursor = connection.cursor()
     query = '''select sql from sqlite_master where type = 'table';'''
     data = cursor.execute(query)
+
     schema={}
 
     for tuple in data:
+        #print(tuple)
         for creatnQuery in tuple:
             #print(creatnQuery)
             junk=['\n','\t','"',"'"]
@@ -24,8 +26,8 @@ def BuildSemanticMap(database):
                     if i in attr[0]:
                         attr[0].replace(i,"")
                 schema[wordlist[2]].append(attr[0])
-    print("Scheme : " ,schema)
+    #print("Scheme : " ,schema)
     return schema
 
-#BuildSemanticMap('data/college.db')
+#BuildSemanticMap('data/collegesystem.db')
 
