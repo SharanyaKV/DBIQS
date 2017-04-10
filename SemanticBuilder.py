@@ -9,7 +9,7 @@ def BuildSemanticMap(database):
 
     for tuple in data:
         for creatnQuery in tuple:
-            print(creatnQuery)
+            #print(creatnQuery)
             junk=['\n','\t','"',"'"]
 
             wordlist = creatnQuery.split(' ')
@@ -27,5 +27,5 @@ def BuildSemanticMap(database):
     print("Scheme : " ,schema)
     return schema
 
-BuildSemanticMap('data/college.db')
+#BuildSemanticMap('data/college.db')
 
