@@ -1,3 +1,3 @@
 from CodeGenerator import generateCode
-database = 'data/college.db'
+database = 'data/collegesystem.db'
 generateCode(database)
