@@ -5,7 +5,7 @@ def generateMR():
     text = nltk.word_tokenize(nlq)
     nlquery = nltk.pos_tag(text)
 
-    print(nlquery)
+    #print(nlquery)
 
     keywords = []
     numerals = []
