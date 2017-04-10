@@ -1,5 +1,4 @@
 import sqlite3
-
 import itertools
 from nltk.corpus import stopwords
 from SemanticBuilder import BuildSemanticMap
@@ -69,26 +68,27 @@ def generateCode(database):
 
             if identified:
                 break
-    print(numlist)
+    #print(numlist)
 
     for num in numlist:
         for tname in schema:
             for attname in schema[tname]:
                 if issimilar(numlist[num][0], attname):
                     cond.append(tname + '.' + attname + num_op[num] + num)
-    print(cond)
+                    print("Relational Operator Condition : ", tname + '.' + attname + num_op[num] + num)
 
     stopw = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'article',
              'list', 'show'] + stopwords.words('english')
 
     print("Selected tables : ", table)
     print("Selected attributes : ", attr)
-    print()
+    print("*"*50)
     attlist = ', '.join(attr)
     tablelist = ', '.join(table)
 
 
     #Join condition Generation
+
     if len(table)>1:
         for tablepairs in itertools.combinations(table, 2):
             for attribute in schema[tablepairs[0]]:
@@ -137,7 +137,7 @@ def generateCode(database):
     condstr = ' and '.join(cond)
     print()
     print("*" * 50)
-
+    print("*" * 50)
 
 
     if condstr != '':
@@ -145,7 +145,7 @@ def generateCode(database):
     else:
         sqlquery = 'SELECT ' + attlist + ' FROM ' + tablelist + '; '
     print( "Query : "+ sqlquery)
-    print("*" * 50)
+    print()
 
     proceed = input('Proceed? (Y/N) : ')
     if proceed == 'Y':
