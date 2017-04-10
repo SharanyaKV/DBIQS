@@ -22,18 +22,19 @@ def generateCode(database):
     #Special words and Table, attribute selection
     for word in keywords:
         identified = False
-        outlier= ['select', 'list', 'show', 'out']
-        for tname in schema:
-            if issimilar(word, tname):
-                table.append(tname)
-                identified = True
-            for attname in schema[tname]:
-                if issimilar(word, attname):
-                    attr.append(tname + '.' + attname)
+        outlier= ['select', 'list', 'show', 'out','name', 'number']
+        if word.lower() not in outlier:
+            for tname in schema:
+                if issimilar(word, tname):
                     table.append(tname)
                     identified = True
-        if not identified and word.lower() not in outlier:
-            special.append(word)
+                for attname in schema[tname]:
+                    if issimilar(word, attname):
+                        attr.append(tname + '.' + attname)
+                        table.append(tname)
+                        identified = True
+            if not identified:
+                special.append(word)
 
     table = list(set(table))
     attr = list(set(attr))
@@ -75,14 +76,14 @@ def generateCode(database):
             for attname in schema[tname]:
                 if issimilar(numlist[num][0], attname):
                     cond.append(tname + '.' + attname + num_op[num] + num)
-                    print("Relational Operator Condition : ", tname + '.' + attname + num_op[num] + num)
+                    #print("Relational Operator Condition : ", tname + '.' + attname + num_op[num] + num)
 
     stopw = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'article',
              'list', 'show'] + stopwords.words('english')
 
-    print("Selected tables : ", table)
-    print("Selected attributes : ", attr)
-    print("*"*50)
+    #print("Selected tables : ", table)
+    #print("Selected attributes : ", attr)
+    #print("*"*50)
     attlist = ', '.join(attr)
     tablelist = ', '.join(table)
 
@@ -94,11 +95,11 @@ def generateCode(database):
             for attribute in schema[tablepairs[0]]:
                 if attribute in schema[tablepairs[1]]:
                     cond.append(tablepairs[0] + '.' + attribute + '=' + tablepairs[1] + '.' + attribute)
-                    print("Join Condition : ", tablepairs[0] + '.' + attribute + '=' + tablepairs[1] + '.' + attribute)
+                    #print("Join Condition : ", tablepairs[0] + '.' + attribute + '=' + tablepairs[1] + '.' + attribute)
 
     if attlist == '':
         attlist = '*'
-
+    #Special word processing
     condlist = {}
     for item in special:
         if item.lower() not in stopw:
@@ -132,11 +133,11 @@ def generateCode(database):
             for attname in schema[tname]:
                 if issimilar(condlist[item][0], attname):
                     cond.append(tname + '.' + attname + " = '" + item + "'")
-                    print("Equality Condition : "+tname + '.' + attname + " = '" + item + "'")
+                    #print("Equality Condition : "+tname + '.' + attname + " = '" + item + "'")
 
     condstr = ' and '.join(cond)
-    print()
-    print("*" * 50)
+    #print()
+    #print("*" * 50)
     print("*" * 50)
 
 
@@ -148,7 +149,7 @@ def generateCode(database):
     print()
 
     proceed = input('Proceed? (Y/N) : ')
-    if proceed == 'Y':
+    if proceed == 'Y' or proceed == 'y':
         connection = sqlite3.connect(database)
         cursor = connection.cursor()
         data = cursor.execute(sqlquery)
